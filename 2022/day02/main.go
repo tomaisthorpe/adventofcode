@@ -16,21 +16,21 @@ func main() {
 	defer input.Close()
 
 	chosenScores := map[string]int{
-		"X": 1,
-		"Y": 2,
-		"Z": 3,
+		"A": 1,
+		"B": 2,
+		"C": 3,
 	}
 
-	draws := map[string]string{
-		"A": "X",
-		"B": "Y",
-		"C": "Z",
+	loss := map[string]string{
+		"A": "C",
+		"B": "A",
+		"C": "B",
 	}
 
-	wins := map[string]string{
-		"A": "Y",
-		"B": "Z",
-		"C": "X",
+	win := map[string]string{
+		"A": "B",
+		"B": "C",
+		"C": "A",
 	}
 
 	total := 0
@@ -39,18 +39,22 @@ func main() {
 	for scanner.Scan() {
 		line := strings.Split(scanner.Text(), " ")
 		opponent := line[0]
-		chosen := line[1]
+		outcome := line[1]
+		outcomeScore := 0
 
-		outcome := 0
-		if draws[opponent] == chosen {
-			outcome = 3
-		} else if wins[opponent] == chosen {
-			outcome = 6
+		var chosen string
+
+		if outcome == "X" {
+			chosen = loss[opponent]
+		} else if outcome == "Y" {
+			chosen = opponent
+			outcomeScore = 3
+		} else if outcome == "Z" {
+			chosen = win[opponent]
+			outcomeScore = 6
 		}
 
-		fmt.Println(line, outcome)
-
-		total += chosenScores[chosen] + outcome
+		total += chosenScores[chosen] + outcomeScore
 	}
 
 	fmt.Println(total)
